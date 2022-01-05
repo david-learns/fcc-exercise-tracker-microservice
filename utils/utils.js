@@ -17,8 +17,10 @@ function filterLogs(logs, from, to, limit = logs.length) {
 }
 
 function exercisesUpdate(body) {
-    const rawDate = new Date(body.date);
+
+    const rawDate = (body.date) ? new Date(body.date) : new Date();
     const date = `${rawDate.getFullYear()}-${rawDate.getMonth() + 1}-${rawDate.getDate()}`;
+    
     return {
         $push: {
             log: {
