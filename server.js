@@ -35,8 +35,13 @@ app.get('/api/users/:_id/logs', async (req, res) => {
   const db = await dbc.databaseConnection();
   dbc.dbLog();
   const user = await db.collection('users').findOne(filter);
-  const logs = util.filterLogs(user.log, req.query.from, req.query.to, req.query.limit);
-  res.json({ _id: user._id, username: user.username, count: logs.length, log: logs });
+  console.log('user: ' + util.printObj(user));
+  if (user) {
+    res.json({ _id: user._id, username: user.username, count: logs.length, log: logs });
+    const logs = util.filterLogs(user.log, req.query.from, req.query.to, req.query.limit);
+  } else {
+    res.send('Unknown userId');
+  }
 
 });
 
@@ -57,9 +62,14 @@ app.post('/api/users/:_id/exercises', async (req, res) => {
   const db = await dbc.databaseConnection();
   dbc.dbLog();
   const exercise = await db.collection('users').updateOne(filter, util.exercisesUpdate(req.body));
+  console.log('exercise: ' + util.printObj(exercise));
   const user = await db.collection('users').findOne(filter);
   console.log('user: ' + util.printObj(user));
-  res.json(util.exercisesFormatResponse(user._id, user));
+  if (user) {
+    res.json(util.exercisesFormatResponse(user._id, user));
+  } else {
+    res.send('Unknown userId');
+  }
 
 });
 
