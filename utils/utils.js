@@ -42,6 +42,18 @@ function exercisesFormatResponse(_id, user) {
     }
 }
 
+function printObj(obj) {
+    const keysArr = Object.keys(obj);
+    const propArr = Object.values(obj);
+    let str = '';
+    for (let i = 0; i < keysArr.length; i++) {
+      str += keysArr[i] + ': ' + (Array.isArray(propArr[i]) ? 'len:' + propArr[i].length : propArr[i]);
+      if (i + 1 !== keysArr.length) {
+        str += ', ';
+      }    
+    }
+    return str;
+  }
 
 
 
@@ -50,4 +62,5 @@ module.exports = {
     filterLogs,
     exercisesUpdate,
     exercisesFormatResponse,
+    printObj,
 }

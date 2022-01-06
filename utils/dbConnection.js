@@ -35,7 +35,7 @@ function dbLog() {
 
 function commandStartedEvent(event) {
     switch (event.commandName) {
-        case 'find': return event.commandName + ' ' + event.command.find + '\n\t' + event.command.filter;
+        case 'find': return event.commandName + ' ' + event.command.find + ' ' + event.command.filter._id;
         case 'insert': return event.commandName + ' ' + event.command.insert;
         case 'update': return event.commandName + ' ' + event.command.update;
     }
@@ -43,9 +43,9 @@ function commandStartedEvent(event) {
 
 function commandSucceededEvent(event) {
     switch (event.commandName) {
-        case 'find': return event.commandName + ' ' + event.duration;
-        case 'insert': return event.commandName + ' ' + event.duration;
-        case 'update': return event.commandName + ' ' + event.duration;
+        case 'find': return event.commandName + ' ' + 'dur:' + event.duration;
+        case 'insert': return event.commandName + ' ' + 'dur:' + event.duration;
+        case 'update': return event.commandName + ' ' + 'dur:' + event.duration;
     }
 }
 

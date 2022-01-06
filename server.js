@@ -58,6 +58,7 @@ app.post('/api/users/:_id/exercises', async (req, res) => {
   dbc.dbLog();
   const exercise = await db.collection('users').updateOne(filter, util.exercisesUpdate(req.body));
   const user = await db.collection('users').findOne(filter);
+  console.log('user: ' + util.printObj(user));
   res.json(util.exercisesFormatResponse(user._id, user));
 
 });
@@ -66,3 +67,5 @@ app.post('/api/users/:_id/exercises', async (req, res) => {
 const listener = app.listen(process.env.PORT || 3000, () => {
   console.log('app is listening on port ' + listener.address().port + ', pid: ' + process.pid);
 });
+
+
