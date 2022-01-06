@@ -12,9 +12,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 
-
-
-
 app.get('/', (req, res) => {
   console.log('GET /');
   res.sendFile(__dirname + '/views/index.html');

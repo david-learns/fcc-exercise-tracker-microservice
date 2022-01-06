@@ -36,17 +36,17 @@ function dbLog() {
 
 function commandStartedEvent(event) {
     switch (event.commandName) {
-        case 'find': return event.commandName + ' ' + event.command.find + ' ' + event.command.filter._id;
-        case 'insert': return event.commandName + ' ' + event.command.insert;
-        case 'update': return event.commandName + ' ' + event.command.update;
+        case 'find': return event.requestId + ', ' + event.commandName + ', ' + event.command.find + ', ' + event.command.filter._id;
+        case 'insert': return event.requestId + ', ' + event.commandName + ', ' + event.command.insert;
+        case 'update': return event.requestId + ', ' + event.commandName + ', ' + event.command.update;
     }
 }
 
 function commandSucceededEvent(event) {
     switch (event.commandName) {
-        case 'find': return event.commandName + ' ' + 'dur:' + event.duration;
-        case 'insert': return event.commandName + ' ' + 'dur:' + event.duration;
-        case 'update': return event.commandName + ' ' + 'dur:' + event.duration;
+        case 'find': return event.requestId + ', ' + event.commandName + ', ' + 'dur:' + event.duration;
+        case 'insert': return event.requestId + ', ' + event.commandName + ', ' + 'dur:' + event.duration;
+        case 'update': return event.requestId + ', ' + event.commandName + ', ' + 'dur:' + event.duration;
     }
 }
 

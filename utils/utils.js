@@ -1,10 +1,10 @@
 'use strict';
 
-function filterLogs(logs, from, to, limit = logs.length) {
+function filterLogs(logs = [], from, to, limit = logs.length) {
     
     let arr = [...logs];
     if (logs.length === 0) {
-        return arr;
+        return [];
     }
     if (!Number.isNaN(Date.parse(from))) {
         arr = arr.filter(e => Date.parse(e.date) >= Date.parse(from));
