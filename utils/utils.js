@@ -1,8 +1,7 @@
 'use strict';
 
 function filterLogs(logs, from, to, limit = logs.length) {
-    console.log('logs: ' + logs);
-    console.log(`from: ${from}, to: ${to}, limit: ${limit}`);
+    
     let arr = [...logs];
     if (logs.length === 0) {
         return arr;
@@ -33,6 +32,7 @@ function exercisesUpdate(body) {
 }
 
 function exercisesFormatResponse(user) {
+    
     return {
         _id: user._id,
         username: user.username,
@@ -41,6 +41,9 @@ function exercisesFormatResponse(user) {
         description: user.log[user.log.length - 1].description
     }
 }
+
+
+
 
 
 module.exports = {
