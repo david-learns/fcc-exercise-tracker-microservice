@@ -13,14 +13,14 @@ app.use(express.urlencoded({ extended: true }));
 
 
 app.get('/', (req, res) => {
-  console.log('GET /');
+  console.log('GET ' + req.path);
   res.sendFile(__dirname + '/views/index.html');
   
 });
 
 
 app.get('/api/users', async (req, res) => {
-  console.log('GET /api/users');
+  console.log('GET ' + req.path);
   const db = await dbc.databaseConnection();
   const users = await db.collection('users').find({}, { projection: { _id: 1, username: 1 } }).toArray();
   res.json(users);
@@ -29,14 +29,14 @@ app.get('/api/users', async (req, res) => {
 
 
 app.get('/api/users/:_id/logs', async (req, res) => {
-  console.log('GET /api/users/:_id/logs');
+  console.log('GET ' + req.path);
   const filter = { _id: mongodb.ObjectId(req.params._id) };
   const db = await dbc.databaseConnection();
   const user = await db.collection('users').findOne(filter);
   console.log('user: ' + util.printObj(user));
   if (user) {
     const logs = (user.log) ? util.filterLogs(user.log, req.query.from, req.query.to, req.query.limit) : [];
-    res.json({ username: user.username, count: logs.length, _id: user._id, log: logs });
+    res.json({ _id: user._id, username: user.username, count: logs.length, log: logs });
   } else {
     res.send('Unknown userId');
   }
@@ -45,7 +45,7 @@ app.get('/api/users/:_id/logs', async (req, res) => {
 
 
 app.post('/api/users', async (req, res) => {
-  console.log('POST /api/users');
+  console.log('POST ' + req.path);
   const db = await dbc.databaseConnection();
   const user = await db.collection('users').insertOne({ username: req.body.username });
   res.json({ username: req.body.username, _id: user.insertedId });
@@ -54,7 +54,7 @@ app.post('/api/users', async (req, res) => {
 
 
 app.post('/api/users/:_id/exercises', async (req, res) => {
-  console.log('POST /api/users/:_id/exercises');
+  console.log('POST ' + req.path);
   const filter = { _id: mongodb.ObjectId(req.body[':_id']) };
   const db = await dbc.databaseConnection();
   const exercise = await db.collection('users').updateOne(filter, util.exercisesUpdate(req.body));
