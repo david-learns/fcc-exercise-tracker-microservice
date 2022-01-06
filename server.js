@@ -13,6 +13,7 @@ app.use(express.urlencoded({ extended: true }));
 
 
 app.get('/', (req, res) => {
+  
   console.log('GET ' + req.path);
   res.sendFile(__dirname + '/views/index.html');
   
@@ -20,6 +21,7 @@ app.get('/', (req, res) => {
 
 
 app.get('/api/users', async (req, res) => {
+
   console.log('GET ' + req.path);
   const db = await dbc.databaseConnection();
   const users = await db.collection('users').find({}, { projection: { _id: 1, username: 1 } }).toArray();
@@ -29,6 +31,7 @@ app.get('/api/users', async (req, res) => {
 
 
 app.get('/api/users/:_id/logs', async (req, res) => {
+
   console.log('GET ' + req.path);
   const filter = { _id: mongodb.ObjectId(req.params._id) };
   const db = await dbc.databaseConnection();
@@ -45,21 +48,25 @@ app.get('/api/users/:_id/logs', async (req, res) => {
 
 
 app.post('/api/users', async (req, res) => {
+
   console.log('POST ' + req.path);
+  console.log('body: ' + util.printObj(req.body));
   const db = await dbc.databaseConnection();
   const user = await db.collection('users').insertOne({ username: req.body.username });
+  console.log('user: ' + util.printObj(user));
   res.json({ username: req.body.username, _id: user.insertedId });
 
 });
 
 
 app.post('/api/users/:_id/exercises', async (req, res) => {
+
   console.log('POST ' + req.path);
   console.log('body: ' + util.printObj(req.body));
   const filter = { _id: mongodb.ObjectId(req.params._id) };
   const db = await dbc.databaseConnection();
   const exercise = await db.collection('users').updateOne(filter, util.exercisesUpdate(req.body));
-  console.log('exercise: ' + util.printObj(exercise));
+  console.log('exercise: matched: ' + Boolean(exercise.matchedCount) + ', modified: ' + Boolean(exercise.modifiedCount));
   if (exercise.matchedCount) {
     const user = await db.collection('users').findOne(filter);
     console.log('user: ' + util.printObj(user));
@@ -72,7 +79,9 @@ app.post('/api/users/:_id/exercises', async (req, res) => {
 
 
 const listener = app.listen(process.env.PORT || 3000, () => {
+
   console.log('app is listening on port ' + listener.address().port + ', pid: ' + process.pid);
+
 });
 
 
