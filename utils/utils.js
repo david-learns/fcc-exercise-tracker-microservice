@@ -1,6 +1,6 @@
 'use strict';
 
-function filterLogs(logs = [], from, to, limit = logs.length) {
+function filterLogs(logs, from, to, limit = logs.length) {
     
     let arr = [...logs];
     if (logs.length === 0) {
@@ -18,7 +18,7 @@ function filterLogs(logs = [], from, to, limit = logs.length) {
 function exercisesUpdate(body) {
 
     const rawDate = (body.date) ? new Date(body.date) : new Date();
-    const date = `${rawDate.getFullYear()}-${rawDate.getMonth() + 1}-${rawDate.getDate()}`;
+    const date = rawDate.toDateString();
     
     return {
         $push: {
@@ -34,11 +34,11 @@ function exercisesUpdate(body) {
 function exercisesFormatResponse(_id, user) {
     
     return {
-        _id,
         username: user.username,
+        description: user.log[user.log.length - 1].description,
+        duration: +user.log[user.log.length - 1].duration,
         date: user.log[user.log.length - 1].date,
-        duration: user.log[user.log.length - 1].duration,
-        description: user.log[user.log.length - 1].description
+        _id,
     }
 }
 

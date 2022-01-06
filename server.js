@@ -36,7 +36,7 @@ app.get('/api/users/:_id/logs', async (req, res) => {
   console.log('user: ' + util.printObj(user));
   if (user) {
     const logs = util.filterLogs(user.log, req.query.from, req.query.to, req.query.limit);
-    res.json({ _id: user._id, username: user.username, count: logs.length, log: logs });
+    res.json({ username: user.username, count: logs.length, _id: user._id, log: logs });
   } else {
     res.send('Unknown userId');
   }
@@ -48,7 +48,7 @@ app.post('/api/users', async (req, res) => {
   console.log('POST /api/users');
   const db = await dbc.databaseConnection();
   const user = await db.collection('users').insertOne({ username: req.body.username });
-  res.json({ _id: user.insertedId, username: req.body.username });
+  res.json({ username: req.body.username, _id: user.insertedId });
 
 });
 
