@@ -13,16 +13,18 @@ app.use(express.urlencoded({ extended: true }));
 
 
 app.get('/', (req, res) => {
+  
   res.sendFile(__dirname + '/views/index.html');
+  
 });
 
 
 app.get('/api/users', async (req, res) => {
-
+  
   const db = await dbc.databaseConnection();
   const users = await db.collection('users').find({}, { projection: { _id: 1, username: 1 } }).toArray();
   res.json(users);
-
+  
 });
 
 
