@@ -43,7 +43,10 @@ function exercisesFormatResponse(_id, user) {
 }
 
 function printObj(obj) {
+
+    if (obj === undefined || obj === null) return obj;
     const keysArr = Object.keys(obj);
+    if (keysArr.length === 0) return 'empty';
     const propArr = Object.values(obj);
     let str = '';
     for (let i = 0; i < keysArr.length; i++) {
