@@ -1,6 +1,6 @@
 'use strict';
 
-const { MongoClient, CommandSucceededEvent } = require('mongodb');
+const { MongoClient } = require('mongodb');
 require('dotenv').config();
 
 let cachedDb = null;
@@ -21,6 +21,7 @@ async function databaseConnection() {
         monitorCommands: true,
     });
 
+    dbLog();
     const db = client.db(process.env.DB_NAME);
     cachedDb = db;
     return db;
