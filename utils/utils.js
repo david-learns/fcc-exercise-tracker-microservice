@@ -3,7 +3,7 @@
 function filterLogs(logs, from, to, limit = logs.length) {
     
     let arr = [...logs];
-    if (logs.length === 0) {
+    if (!logs || logs.length === 0) {
         return [];
     }
     if (!Number.isNaN(Date.parse(from))) {
