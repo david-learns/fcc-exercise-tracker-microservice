@@ -55,6 +55,7 @@ app.post('/api/users', async (req, res) => {
 
 app.post('/api/users/:_id/exercises', async (req, res) => {
   console.log('POST ' + req.path);
+  console.log('body: ' + util.printObj(req.body));
   const filter = { _id: mongodb.ObjectId(req.body[':_id']) };
   const db = await dbc.databaseConnection();
   const exercise = await db.collection('users').updateOne(filter, util.exercisesUpdate(req.body));
