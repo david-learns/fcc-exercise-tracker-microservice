@@ -35,7 +35,7 @@ app.get('/api/users/:_id/logs', async (req, res) => {
   const user = await db.collection('users').findOne(filter);
   console.log('user: ' + util.printObj(user));
   if (user) {
-    const logs = util.filterLogs(user.log, req.query.from, req.query.to, req.query.limit);
+    const logs = (user.log) ? util.filterLogs(user.log, req.query.from, req.query.to, req.query.limit) : [];
     res.json({ username: user.username, count: logs.length, _id: user._id, log: logs });
   } else {
     res.send('Unknown userId');
