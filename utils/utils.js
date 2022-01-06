@@ -31,10 +31,10 @@ function exercisesUpdate(body) {
     };
 }
 
-function exercisesFormatResponse(user) {
-
+function exercisesFormatResponse(_id, user) {
+    
     return {
-        _id: user[':_id'],
+        _id,
         username: user.username,
         date: user.log[user.log.length - 1].date,
         duration: user.log[user.log.length - 1].duration,

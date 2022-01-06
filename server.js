@@ -49,12 +49,12 @@ app.post('/api/users', async (req, res) => {
 
 
 app.post('/api/users/:_id/exercises', async (req, res) => {
-
+  
   const filter = { _id: mongodb.ObjectId(req.body[':_id']) };
   const db = await dbc.databaseConnection();
   const exercise = await db.collection('users').updateOne(filter, util.exercisesUpdate(req.body));
   const user = await db.collection('users').findOne(filter);
-  res.json(util.exercisesFormatResponse(user));
+  res.json(util.exercisesFormatResponse(user._id, user));
 
 });
 
