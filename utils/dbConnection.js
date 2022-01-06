@@ -1,6 +1,6 @@
 'use strict';
 
-const { MongoClient } = require('mongodb');
+const { MongoClient, CommandSucceededEvent } = require('mongodb');
 require('dotenv').config();
 
 let cachedDb = null;
@@ -16,12 +16,37 @@ async function databaseConnection() {
     client = await MongoClient.connect(uri, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
+        connectTimeoutMS: 60000,
+        socketTimeoutMS: 60000,
+        monitorCommands: true,
     });
 
     const db = client.db(process.env.DB_NAME);
     cachedDb = db;
     return db;
 
+}
+
+function dbLog() {
+    client.on('commandStarted', event => console.log('commandStarted: ' + commandStartedEvent(event)));
+    client.on('commandSucceeded', event => console.log('commandSucceeded: ' + commandSucceededEvent(event)));
+    client.on('commandFailed', event => console.log('commandFailed: ' + event));
+}
+
+function commandStartedEvent(event) {
+    switch (event.commandName) {
+        case 'find': return event.commandName + ' ' + event.command.find + '\n\t' + event.command.filter;
+        case 'insert': return event.commandName + ' ' + event.command.insert;
+        case 'update': return event.commandName + ' ' + event.command.update;
+    }
+}
+
+function commandSucceededEvent(event) {
+    switch (event.commandName) {
+        case 'find': return event.commandName + ' ' + event.duration;
+        case 'insert': return event.commandName + ' ' + event.duration;
+        case 'update': return event.commandName + ' ' + event.duration;
+    }
 }
 
 function closeDatabaseConnection() {
@@ -31,4 +56,5 @@ function closeDatabaseConnection() {
 module.exports = {
     databaseConnection,
     closeDatabaseConnection,
+    dbLog,
 }
