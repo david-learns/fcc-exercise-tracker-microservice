@@ -34,11 +34,11 @@ function exercisesUpdate(body) {
 function exercisesFormatResponse(_id, user) {
     
     return {
-        username: user.username,
-        description: user.log[user.log.length - 1].description,
-        duration: +user.log[user.log.length - 1].duration,
-        date: user.log[user.log.length - 1].date,
         _id,
+        username: user.username,
+        date: user.log[user.log.length - 1].date,
+        duration: +user.log[user.log.length - 1].duration,
+        description: user.log[user.log.length - 1].description,
     }
 }
 
